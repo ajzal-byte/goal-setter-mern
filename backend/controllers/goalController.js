@@ -83,8 +83,9 @@ const deleteGoal = asyncHandler(async (req, res) => {
     throw new Error("User not authorized");
   }
 
-  const deletedGoal = await Goal.findByIdAndDelete(req.params.id);
-  res.status(200).json(deletedGoal);
+  await Goal.findByIdAndDelete(req.params.id);
+  
+  res.status(200).json({id: req.params.id});
 });
 
 module.exports = {
