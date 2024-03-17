@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
 import { register, reset } from "../features/auth/authSlice";
-import Spinner from '../components/Spinner'
+import { Spinner } from "../components";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -50,7 +50,7 @@ const Register = () => {
     dispatch(register(userData));
   };
 
-  if(isLoading) return <Spinner />
+  if (isLoading) return <Spinner />;
 
   return (
     <>
