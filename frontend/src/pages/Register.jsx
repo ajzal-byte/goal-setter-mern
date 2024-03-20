@@ -39,6 +39,21 @@ const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    if (name !== name.trim() || name.length <= 0) {
+      return toast.error(
+        "Name cannot be empty or contain only whitespaces."
+      );
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return toast.error("Invalid email format.");
+    }
+
+    if (password.length < 6) {
+      return toast.error("Password should be at least 6 characters long.");
+    }
+
     if (password !== cpassword) return toast.error("Passwords do not match");
 
     const userData = {
