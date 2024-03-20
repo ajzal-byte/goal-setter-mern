@@ -55,7 +55,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (!user) {
     res.status(400);
-    throw new Error("User doesn't exists");
+    throw new Error("User doesn't exist");
   }
 
   if (user && (await bcrypt.compare(password, user.password)))
@@ -79,6 +79,46 @@ const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(req.user);
 });
 
+// @desc Edit user data
+// @route PUT /api/users/:userId
+// @acess Private
+const editUser = asyncHandler(async (req, res) => {
+  const { userId, name, email } = req.body;
+  const user = await User.findByIdAndUpdate(
+    userId,
+    { name, email },
+    { new: true }
+  );
+
+  if (user) {
+    res.status(200).json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      profileUrl: user.profileUrl,
+      token: req.token,
+    });
+  } else {
+    res.status(400);
+    throw new Error("User not found");
+  }
+});
+
+// Photo url upload
+const profileUpload = asyncHandler(async (req, res) => {
+  const url = req.body.url;
+
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    {
+      profileUrl: url,
+    },
+    { new: true }
+  );
+
+  res.status(200).json(user)
+});
+
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -90,4 +130,6 @@ module.exports = {
   registerUser,
   loginUser,
   getMe,
+  editUser,
+  profileUpload
 };
