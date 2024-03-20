@@ -30,7 +30,6 @@ const Profile = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.url);
         dispatch(profileUpdate(data.url));
       })
       .catch((err) => toast.error(err));
@@ -40,7 +39,7 @@ const Profile = () => {
     const newName = prompt("Enter new name:", name);
     const newEmail = prompt("Enter new email", email);
 
-    if ((newName && newName !== newName.trim()) || newName.length <= 0) {
+    if ((newName && newName !== newName.trim()) || newName && newName.length <= 0) {
       return toast.error("Name cannot be empty or contain only whitespaces.");
     }
 
