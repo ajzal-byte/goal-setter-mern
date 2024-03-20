@@ -3,7 +3,7 @@ import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-// import { adminLogin, reset } from '../../features/adminAuth/adminAuthSlice'
+import { adminLogin, reset } from "../../features/adminAuth/adminAuthSlice";
 import { Spinner } from "../../components";
 
 const AdminLogin = () => {
@@ -17,7 +17,17 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const {admin, is}
+  const { admin, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.adminAuth
+  );
+
+  useEffect(() => {
+    if (isError) toast.error(message);
+
+    if (isSuccess || admin) navigate("/admin");
+
+    dispatch(reset());
+  }, [admin, isError, isSuccess, dispatch, navigate, message]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -34,8 +44,11 @@ const AdminLogin = () => {
       password,
     };
 
-    // dispatch()
+    dispatch(adminLogin(adminData));
   };
+
+  if (isLoading) return <Spinner />;
+
   return (
     <>
       <div className="adminLogin-card">
