@@ -15,6 +15,18 @@ const Header = () => {
     navigate("/login");
   };
 
+  const profile = (e) => {
+    e.preventDefault();
+    navigate("/profile");
+  };
+  const dashboard = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
+  const currentPath =
+    typeof window !== "undefined" ? window.location.pathname : "/";
+
   return (
     <header className="header">
       <div className="logo">
@@ -23,9 +35,21 @@ const Header = () => {
       <ul>
         {user ? (
           <li>
-            <button className="btn" onClick={onLogout}>
-              <FaSignOutAlt /> Logout
-            </button>
+            <div className="header-buttons">
+              {currentPath === "/" && (
+                <button className="btn-1" onClick={profile}>
+                  Profile
+                </button>
+              )}
+              {currentPath === "/profile" && (
+                <button className="btn-1" onClick={dashboard}>
+                  Dashboard
+                </button>
+              )}
+              <button className="btn" onClick={onLogout}>
+                <FaSignOutAlt /> Logout
+              </button>
+            </div>
           </li>
         ) : (
           <>
