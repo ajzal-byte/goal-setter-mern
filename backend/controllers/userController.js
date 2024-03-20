@@ -63,6 +63,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
+      profileUrl: user.profileUrl,
       token: generateToken(user._id),
     });
   else {
@@ -83,7 +84,8 @@ const getMe = asyncHandler(async (req, res) => {
 // @route PUT /api/users/:userId
 // @acess Private
 const editUser = asyncHandler(async (req, res) => {
-  const { userId, name, email } = req.body;
+  const userId = req.params.userId
+  const { name, email } = req.body;
   const user = await User.findByIdAndUpdate(
     userId,
     { name, email },
@@ -107,6 +109,7 @@ const editUser = asyncHandler(async (req, res) => {
 // Photo url upload
 const profileUpload = asyncHandler(async (req, res) => {
   const url = req.body.url;
+  console.log("url from backend: ", url);
 
   const user = await User.findByIdAndUpdate(
     req.user.id,
