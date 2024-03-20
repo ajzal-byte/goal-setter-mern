@@ -15,6 +15,19 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add a password"],
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    isBlock: {
+      type: Boolean,
+      default: false,
+    },
+    profileUrl: {
+      type: String,
+      default:
+        "https://static.vecteezy.com/system/resources/thumbnails/002/387/693/small/user-profile-icon-free-vector.jpg",
+    },
   },
   {
     timestamps: true,
