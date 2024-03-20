@@ -10,8 +10,14 @@ const adminLogin = async (adminData) => {
   return response.data;
 };
 
+// Admin Logout
+const adminLogout = () => {
+  localStorage.removeItem("admin")
+}
+
 const adminAuthService = {
   adminLogin,
+  adminLogout
 };
 
 export default adminAuthService;

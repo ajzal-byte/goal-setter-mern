@@ -32,6 +32,11 @@ export const adminLogin = createAsyncThunk(
   }
 );
 
+// Admin Logout
+export const adminLogout = createAsyncThunk("auth/logout", async () => {
+  await adminAuthService.adminLogout();
+});
+
 const adminAuthSlice = createSlice({
   name: "adminAuth",
   initialState,
@@ -58,6 +63,9 @@ const adminAuthSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(adminLogout.fulfilled, (state, action) => {
+        state.admin = null;
       });
   },
 });
