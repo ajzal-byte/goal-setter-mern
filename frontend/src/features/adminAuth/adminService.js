@@ -12,12 +12,24 @@ const adminLogin = async (adminData) => {
 
 // Admin Logout
 const adminLogout = () => {
-  localStorage.removeItem("admin")
-}
+  localStorage.removeItem("admin");
+};
+
+// Get Users
+const getUsers = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(API_URL, config);
+  return response.data;
+};
 
 const adminAuthService = {
   adminLogin,
-  adminLogout
+  adminLogout,
+  getUsers,
 };
 
 export default adminAuthService;
