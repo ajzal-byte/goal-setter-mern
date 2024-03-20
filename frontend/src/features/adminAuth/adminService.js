@@ -26,10 +26,22 @@ const getUsers = async (token) => {
   return response.data;
 };
 
+// Block User
+const userBlock = async (token, userId) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.post(API_URL + "block", { userId }, config);
+  return response.data;
+};
+
 const adminAuthService = {
   adminLogin,
   adminLogout,
   getUsers,
+  userBlock
 };
 
 export default adminAuthService;

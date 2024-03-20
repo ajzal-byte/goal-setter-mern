@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getUsers, reset } from "../features/adminAuth/adminAuthSlice";
+import { getUsers, reset, userBlock } from "../features/adminAuth/adminAuthSlice";
 import { toast } from "react-hot-toast";
 
 const UsersList = () => {
@@ -17,7 +17,7 @@ const UsersList = () => {
   }, [dispatch]);
 
   const handleBlock = (userId) => {
-    // if(window.confirm("Are you sure?")) dispatch()
+    if(window.confirm("Are you sure?")) dispatch(userBlock(userId))
   };
 
   const handleEdit = (userId, name, email) => {

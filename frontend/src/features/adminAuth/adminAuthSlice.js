@@ -57,6 +57,25 @@ export const getUsers = createAsyncThunk(
   }
 );
 
+// Block user
+export const userBlock = createAsyncThunk(
+  "admin/userBlock",
+  async (userId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().adminAuth.admin.token;
+      return await adminAuthService.userBlock(token, userId);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const adminAuthSlice = createSlice({
   name: "adminAuth",
   initialState,
@@ -94,6 +113,19 @@ const adminAuthSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.users = action.payload;
+      })
+      .addCase(userBlock.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(userBlock.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload.users;
+      })
+      .addCase(userBlock.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       })
   },
 });
