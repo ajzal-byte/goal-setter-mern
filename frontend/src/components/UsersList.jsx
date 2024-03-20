@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getUsers, reset, userBlock } from "../features/adminAuth/adminAuthSlice";
+import { getUsers, reset, userBlock, editUser } from "../features/adminAuth/adminAuthSlice";
 import { toast } from "react-hot-toast";
 
 const UsersList = () => {
@@ -36,8 +36,8 @@ const UsersList = () => {
       return toast.error("Invalid email format.");
     }
 
-    // if (newEmail && newName)
-    //   dispatch(editUser({ userId, name: newName, email: newEmail }));
+    if (newEmail && newName)
+      dispatch(editUser({ userId, name: newName, email: newEmail }));
   };
   return (
     <div className="user-list">

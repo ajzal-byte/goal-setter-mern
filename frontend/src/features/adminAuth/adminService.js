@@ -44,16 +44,32 @@ const searchUser = async (query, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.post(API_URL + "search", {query}, config)
-  return response.data
-}
+  const response = await axios.post(API_URL + "search", { query }, config);
+  return response.data;
+};
+
+// Edit user
+const editUser = async (token, userId, name, email) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.put(
+    API_URL + userId,
+    { userId, name, email },
+    config
+  );
+  return response.data;
+};
 
 const adminAuthService = {
   adminLogin,
   adminLogout,
   getUsers,
   userBlock,
-  searchUser
+  searchUser,
+  editUser
 };
 
 export default adminAuthService;

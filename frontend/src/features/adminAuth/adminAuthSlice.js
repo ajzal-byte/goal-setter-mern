@@ -95,6 +95,25 @@ export const searchUser = createAsyncThunk(
   }
 );
 
+// Edit user
+export const editUser = createAsyncThunk(
+  "admin/editUser",
+  async ({ userId, name, email }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().adminAuth.admin.token;
+      return await adminAuthService.editUser(token, userId, name, email);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const adminAuthSlice = createSlice({
   name: "adminAuth",
   initialState,
@@ -159,6 +178,19 @@ const adminAuthSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+      .addCase(editUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload.users;
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      });
   },
 });
 
