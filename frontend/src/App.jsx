@@ -1,5 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Dashboard, Login, Profile, Register } from "./pages";
+import {
+  Dashboard,
+  Login,
+  Profile,
+  Register,
+  AdminDashboard,
+  AdminLogin,
+} from "./pages";
 import { Header } from "./components";
 import { Toaster } from "react-hot-toast";
 
@@ -11,10 +18,16 @@ const App = () => {
         <div className="container">
           <Header />
           <Routes>
+            {/* user routes */}
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
+
+            {/* admin routes */}
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            {/* <Route path="/admin/adduser" element={<AddUser />} /> */}
           </Routes>
         </div>
       </Router>
