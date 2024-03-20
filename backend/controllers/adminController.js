@@ -10,6 +10,11 @@ const loginAdmin = asyncHandler(async (req, res) => {
   // Check for user email
   const user = await User.findOne({ email });
 
+  if(user && !user.isAdmin){
+    res.status(400);
+    throw new Error("Not Authorized");
+  }
+
   if (user && user.isAdmin && (await bcrypt.compare(password, user.password))) {
     res.json({
       _id: user.id,
@@ -20,7 +25,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error("Not Authorized");
+    throw new Error("Invalid user credentials");
   }
 });
 
