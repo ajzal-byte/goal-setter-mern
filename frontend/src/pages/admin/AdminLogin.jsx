@@ -39,6 +39,15 @@ const AdminLogin = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return toast.error("Invalid email format.");
+    }
+
+    if (password.length < 6) {
+      return toast.error("Password should be at least 6 characters long.");
+    }
+
     const adminData = {
       email,
       password,
