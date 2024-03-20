@@ -28,7 +28,7 @@ const Dashboard = () => {
   return (
     <>
       <section>
-        <h1>Welcome welcome welcome {user?.name}</h1>
+        <h1>Welcome, Vanakkam, Namaskaram {user?.name}</h1>
         <p>Goals Dashboard</p>
       </section>
       <GoalForm />

@@ -1,9 +1,17 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { editUser, profileUpdate } from "../features/auth/authSlice";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!user) navigate("/login");
+  }, [user, navigate, dispatch]);
 
   const [image, setImage] = useState("");
 
@@ -11,10 +19,40 @@ const Profile = () => {
     e.preventDefault();
     if (!image) return toast.error("Please upload a file");
 
-    // const data = new FormData();
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "kmhi9kva");
+    data.append("cloud_name", "dl7uommqj");
+
+    fetch("https://api.cloudinary.com/v1_1/dl7uommqj/image/upload", {
+      method: "POST",
+      body: data,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.url);
+        dispatch(profileUpdate(data.url));
+      })
+      .catch((err) => toast.error(err));
   };
 
-  const handleEdit = () => {};
+  const handleEdit = (userId, name, email) => {
+    const newName = prompt("Enter new name:", name);
+    const newEmail = prompt("Enter new email", email);
+
+    if ((newName && newName !== newName.trim()) || newName.length <= 0) {
+      return toast.error("Name cannot be empty or contain only whitespaces.");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (newEmail && !emailRegex.test(newEmail)) {
+      return toast.error("Invalid email format.");
+    }
+
+    if (newEmail && newName)
+      dispatch(editUser({ userId, name: newName, email: newEmail }));
+  };
+
   return (
     <div>
       <div>

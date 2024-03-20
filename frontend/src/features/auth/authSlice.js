@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
+import toast from "react-hot-toast";
 
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem("user"));
@@ -43,6 +44,46 @@ export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   }
 });
 
+// Edit user
+export const editUser = createAsyncThunk(
+  "auth/editUser",
+  async ({ userId, name, email }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await authService.editUserDetails(token, userId, name, email);
+    } catch (error) {
+      toast.error(error);
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// User Profile update
+export const profileUpdate = createAsyncThunk(
+  "auth/profile",
+  async (profileUrl, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await authService.profileUpload(token, profileUrl);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Logout user
 export const logout = createAsyncThunk("auth/logout", async () => {
   await authService.logout();
 });
@@ -88,6 +129,37 @@ export const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.user = null;
+      })
+
+      .addCase(editUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSucess = true;
+        state.user = action.payload;
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      .addCase(profileUpdate.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(profileUpdate.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSucess = true;
+        state.user = {
+          ...state.user,
+          profileUrl: action.payload.profileUrl,
+        };
+      })
+      .addCase(profileUpdate.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       })
 
       .addCase(logout.fulfilled, (state) => {
