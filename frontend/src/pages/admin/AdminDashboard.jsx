@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { adminLogout, reset } from "../../features/adminAuth/adminAuthSlice";
+import { adminLogout, reset, getUsers } from "../../features/adminAuth/adminAuthSlice";
 import { FaSearch } from "react-icons/fa";
+import UsersList from "../../components/UsersList";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     if (!admin) navigate("/admin/login");
+
+    if(searchQuery) return
+    else dispatch(getUsers())
 
     return () => {
       dispatch(reset());
@@ -87,7 +91,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* <UserList/> */}
+      <UsersList/>
     </div>
   );
 };
