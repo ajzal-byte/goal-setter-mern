@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { adminLogout, reset, getUsers } from "../../features/adminAuth/adminAuthSlice";
+import {
+  adminLogout,
+  reset,
+  getUsers,
+  searchUser
+} from "../../features/adminAuth/adminAuthSlice";
 import { FaSearch } from "react-icons/fa";
 import UsersList from "../../components/UsersList";
 
@@ -21,8 +26,8 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (!admin) navigate("/admin/login");
 
-    if(searchQuery) return
-    else dispatch(getUsers())
+    if (searchQuery) dispatch(searchUser(searchQuery));
+    else dispatch(getUsers());
 
     return () => {
       dispatch(reset());
@@ -31,13 +36,13 @@ const AdminDashboard = () => {
 
   const handleSearchChange = (e) => {
     e.preventDefault();
-    setSearchQuery(e.target.value)
-  }
+    setSearchQuery(e.target.value);
+  };
 
   const onAddUser = (e) => {
     e.preventDefault();
     // navigate("/admin/adduser")
-  }
+  };
   return (
     <div className="container-1">
       <div className="nav">
@@ -85,13 +90,13 @@ const AdminDashboard = () => {
             </button>
             <button onClick={onLogout} className="btn">
               {" "}
-              logout
+              Logout
             </button>
           </div>
         </div>
       </div>
 
-      <UsersList/>
+      <UsersList />
     </div>
   );
 };

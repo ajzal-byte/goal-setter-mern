@@ -37,11 +37,23 @@ const userBlock = async (token, userId) => {
   return response.data;
 };
 
+// Search user
+const searchUser = async (query, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.post(API_URL + "search", {query}, config)
+  return response.data
+}
+
 const adminAuthService = {
   adminLogin,
   adminLogout,
   getUsers,
-  userBlock
+  userBlock,
+  searchUser
 };
 
 export default adminAuthService;

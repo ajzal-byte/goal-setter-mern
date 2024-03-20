@@ -76,6 +76,25 @@ export const userBlock = createAsyncThunk(
   }
 );
 
+// Search user
+export const searchUser = createAsyncThunk(
+  "admin/searchUser",
+  async (query, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().adminAuth.admin.token;
+      return await adminAuthService.searchUser(query, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const adminAuthSlice = createSlice({
   name: "adminAuth",
   initialState,
@@ -123,6 +142,19 @@ const adminAuthSlice = createSlice({
         state.users = action.payload.users;
       })
       .addCase(userBlock.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(searchUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(searchUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload.users;
+      })
+      .addCase(searchUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
