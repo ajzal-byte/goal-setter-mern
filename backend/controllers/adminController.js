@@ -90,7 +90,7 @@ const searchUser = asyncHandler(async (req, res) => {
 // Add user from Admin
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body.userData;
-  if (!name || email || !password) {
+  if (!name || !email || !password) {
     res.status(400);
     throw new Error("Please add all the fields");
   }
