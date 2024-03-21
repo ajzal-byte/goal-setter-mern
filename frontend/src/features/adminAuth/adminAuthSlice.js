@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import adminAuthService from "./adminService";
+import toast from "react-hot-toast";
 
 // Get admin from local storage
 const admin = JSON.parse(localStorage.getItem("admin"));
@@ -114,6 +115,24 @@ export const editUser = createAsyncThunk(
   }
 );
 
+export const addUser = createAsyncThunk(
+  "admin/register",
+  async (user, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().adminAuth.admin.token;
+      return await adminAuthService.addUser(user, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const adminAuthSlice = createSlice({
   name: "adminAuth",
   initialState,
@@ -187,6 +206,20 @@ const adminAuthSlice = createSlice({
         state.users = action.payload.users;
       })
       .addCase(editUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(addUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isUserAdded = true;
+        state.users = action.payload.users;
+      })
+      .addCase(addUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

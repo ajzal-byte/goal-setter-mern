@@ -41,7 +41,7 @@ const AdminDashboard = () => {
 
   const onAddUser = (e) => {
     e.preventDefault();
-    // navigate("/admin/adduser")
+    navigate("/admin/adduser")
   };
   return (
     <div className="container-1">

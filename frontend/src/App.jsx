@@ -6,6 +6,7 @@ import {
   Register,
   AdminDashboard,
   AdminLogin,
+  AddUser
 } from "./pages";
 import { Header } from "./components";
 import { Toaster } from "react-hot-toast";
@@ -27,7 +28,7 @@ const App = () => {
             {/* admin routes */}
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/login" element={<AdminLogin />} />
-            {/* <Route path="/admin/adduser" element={<AddUser />} /> */}
+            <Route path="/admin/adduser" element={<AddUser />} />
           </Routes>
         </div>
       </Router>

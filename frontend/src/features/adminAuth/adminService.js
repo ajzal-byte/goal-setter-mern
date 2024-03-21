@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const API_URL = "/api/admin/";
 
@@ -63,13 +64,26 @@ const editUser = async (token, userId, name, email) => {
   return response.data;
 };
 
+// Add user
+const addUser = async(userData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.post(API_URL + "adduser", {userData}, config)
+  toast.success("User added sucessfully")
+  return response.data
+}
+
 const adminAuthService = {
   adminLogin,
   adminLogout,
   getUsers,
   userBlock,
   searchUser,
-  editUser
+  editUser,
+  addUser
 };
 
 export default adminAuthService;
