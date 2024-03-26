@@ -17,7 +17,10 @@ const App = () => {
       <Toaster />
       <Router>
         <div className="container">
-          <Header />
+        <Routes>
+            <Route path='/admin' element={null} />
+            <Route path="*" element={<Header />} />
+          </Routes>
           <Routes>
             {/* user routes */}
             <Route path="/" element={<Dashboard />} />
