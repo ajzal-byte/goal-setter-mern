@@ -58,6 +58,11 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error("User doesn't exist");
   }
 
+  if(user && user.isBlock === true){
+    res.status(401);
+    throw new Error("User is blocked");
+  }
+
   if (user && (await bcrypt.compare(password, user.password)))
     res.status(200).json({
       _id: user.id,
