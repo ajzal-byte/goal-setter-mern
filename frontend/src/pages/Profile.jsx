@@ -39,7 +39,10 @@ const Profile = () => {
     const newName = prompt("Enter new name:", name);
     const newEmail = prompt("Enter new email", email);
 
-    if ((newName && newName !== newName.trim()) || newName && newName.length <= 0) {
+    if (
+      (newName && newName !== newName.trim()) ||
+      (newName && newName.length <= 0)
+    ) {
       return toast.error("Name cannot be empty or contain only whitespaces.");
     }
 
@@ -85,8 +88,8 @@ const Profile = () => {
             </button>
 
             <div className="upload-button">
-              <div class="custom-file-upload">
-                <label for="profile" class="custom-button">
+              <div className="custom-file-upload">
+                <label htmlFor="profile" className="custom-button">
                   Choose File
                 </label>
                 <input
@@ -94,7 +97,7 @@ const Profile = () => {
                   type="file"
                   name="profile"
                   id="profile"
-                  class="hidden-input"
+                  className="hidden-input"
                 />
               </div>
 
