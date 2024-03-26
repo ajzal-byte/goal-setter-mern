@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-const API_URL = "/api/goals/";
+const API_URL = "http://localhost:8000/api/goals/";
 
 // Create new goal
 const createGoal = async (goalData, token) => {
