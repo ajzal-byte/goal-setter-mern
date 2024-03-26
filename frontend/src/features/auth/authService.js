@@ -26,13 +26,14 @@ const login = async (userData) => {
 
 // Edit user
 const editUserDetails = async (token, userId, name, email) => {
+  console.log("Auth Service reached");
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
   const response = await axios.put(
-    API_URL + userId,
+    API_URL+userId,
     { userId, name, email },
     config
   );
@@ -50,6 +51,7 @@ const profileUpload = async (token, url) => {
     },
   };
 
+  console.log(token);
   const liveUser = JSON.parse(localStorage.getItem("user"));
   const response = await axios.post(
     API_URL + "profile/upload",
@@ -61,6 +63,7 @@ const profileUpload = async (token, url) => {
 
   if (userString) {
     const user = JSON.parse(userString);
+    console.log("response data: ", response.data);
     user.profileUrl = response.data.profileUrl;
     localStorage.setItem("user", JSON.stringify(user));
   }

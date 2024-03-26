@@ -113,7 +113,6 @@ const editUser = asyncHandler(async (req, res) => {
 // Photo url upload
 const profileUpload = asyncHandler(async (req, res) => {
   const url = req.body.url;
-  console.log("url from backend: ", url);
 
   const user = await User.findByIdAndUpdate(
     req.user.id,
